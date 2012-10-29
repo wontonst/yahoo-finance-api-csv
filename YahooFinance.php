@@ -115,32 +115,32 @@ class YahooFinance {
             $stockarray = array_combine($stock, $stocklist);
             $url = $url.$stockquery.'&f=l1'.STATIC_END_;
         }
-        else{
+        else {
 //		die('YAHOO FINANCE RETRIEVECURRENTPRICE IS NOT EQUIPPED TO HANDLE NONARRAY PARAMETER');
             $url = BASE_URL_.$stock.'&f=l1'.STATIC_END_;
         }
         if(!$file=fopen($url,'r'))
-            die('ERROR RETRIEVING STOCK PRICE URL '.$url);        
-                
+            die('ERROR RETRIEVING STOCK PRICE URL '.$url);
+
         //echo 'File size (line 125): '.sizeof($file);
         //if(!is_array($stock))
-          //  return fread($file,sizeof($file));
-        
-$i = 0;
-$stockarray['filesize'] = 0;
+        //  return fread($file,sizeof($file));
+
+        $i = 0;
+        $stockarray['filesize'] = 0;
 
         while($line = fgets($file))
         {
-if(!is_array($stock))
-{
-$stockarray[$stock]=trim($line);
-}
-else
-{
-            $stockarray[$stock[$i]]=trim($line);
-}
-$i++;
-$stockarray['filesize'] += strlen($line);
+            if(!is_array($stock))
+            {
+                $stockarray[$stock]=trim($line);
+            }
+            else
+            {
+                $stockarray[$stock[$i]]=trim($line);
+            }
+            $i++;
+            $stockarray['filesize'] += strlen($line);
         }
         return $stockarray;
     }
@@ -150,7 +150,7 @@ $stockarray['filesize'] += strlen($line);
      * @param $stock stock ticker
      * @param $fromdate start date [format:YYYYMMDD]
      * @param $todate end date [format:YYYYMMDD]
-     * @param $type interval to get data from ['daily','weekly','monthly'] 
+     * @param $type interval to get data from ['daily','weekly','monthly']
 
       Return format:
       array[0] = most recent entry (
@@ -162,7 +162,7 @@ $stockarray['filesize'] += strlen($line);
       array[0]['close'] = closing price (float)
       array[0]['volume'] = volume (int)
       array[0]['adj'] = adj close (float)
-     * 
+     *
      * array['filesize'] = file retrieved size
       )
      */
@@ -196,23 +196,23 @@ $stockarray['filesize'] += strlen($line);
         $month = $month - 1;
         $url = $url . '&d=' . $month . '&e=' . $todate[6] . $todate[7] . '&f=' . $todate[0] . $todate[1] . $todate[2] . $todate[3];
         switch ($type) {
-            case('daily'):
-                $url = $url . '&g=d';
-                break;
-            case('monthly'):
-                $url = $url . '&g=m';
-                break;
-            case('yearly'):
-                $url = $url . '&g=y';
-                break;
-            default:
-                return false;
+        case('daily'):
+            $url = $url . '&g=d';
+            break;
+        case('monthly'):
+            $url = $url . '&g=m';
+            break;
+        case('yearly'):
+            $url = $url . '&g=y';
+            break;
+        default:
+            return false;
         }
         $url = $url . STATIC_HISTORICAL_;
         $handle = fopen($url, "r");
-$arr['filesize'] = sizeof($handle);
+        $arr['filesize'] = sizeof($handle);
         $keys = array('line', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj');
-        //new keys       
+        //new keys
         $arr = array();
         $buffer = fgets($handle, 5120);
         if ($buffer == "")
@@ -232,29 +232,205 @@ $arr['filesize'] = sizeof($handle);
         fclose($handle);
         return $arr;
     }
-static function retrieveEarningsDate($ticker)
-{
-$url = 'http://finance.yahoo.com/q?s='.$ticker;
-$file = fopen($url,'r');
-$string = stream_get_contents($file);
+    static function retrieveEarningsDate($ticker)
+    {
+        $url = 'http://finance.yahoo.com/q?s='.$ticker;
+        $file = fopen($url,'r');
+        $string = stream_get_contents($file);
 
-$index = strpos($string,'Next Earnings Date:</th><td class=');
-$line = substr($string,$index+52,20);
+        $index = strpos($string,'Next Earnings Date:</th><td class=');
+        $line = substr($string,$index+52,20);
 //echo $line;
-if(preg_match('/(\d+-\w+-\d+)/',$line,$matches) == false)
-echo "!regexerror!";
-return $matches[1];
+        if(preg_match('/(\d+-\w+-\d+)/',$line,$matches) == false) {
+//echo "!regexerror!";
+//echo $line;
+            return 'N/A';
+            return false;
+        }
+        return $matches[1];
+    }
+
+    public static function toAbbrev($str)
+    {
+        switch($str) {
+        case 'AfterHoursChange':
+            return 'c8';
+        case 'AnnualizedGain':
+            return 'g3';
+        case 'Ask':
+            return 'b2';
+        case 'Size':
+            return 'a5';
+        case 'AverageDailyVolume':
+            return 'a2';
+        case 'Bid':
+            return 'b3';
+        case 'BidSize':
+            return 'b6';
+        case 'BookValuePerShare':
+            return 'b4';
+        case 'Change':
+            return 'c1';
+        case 'ChangeInPercent':
+            return 'c0';
+        case 'ChangeFromFiftyDayMovingAverage':
+            return 'm7';
+        case 'ChangeFromTwoHundredDayMovingAverage':
+            return 'm5';
+        case 'ChangeFromYearHigh':
+            return 'k4';
+        case 'ChangeFromYearLow':
+            return 'j5';
+        case 'ChangeInPercent':
+            return 'k2';
+        case 'Change':
+            return 'c6';
+        case 'Commission':
+            return'c3';
+        case 'Currency':
+            return 'c4';
+        case 'DayHigh':
+            return 'h0';
+        case 'DayLow':
+            return 'g0';
+        case 'DayRange':
+            return'm2';
+        case 'DayValueChange':
+            return 'w4';
+        case 'DividendPayDate':
+            return 'r1';
+        case 'TrailingAnnualDividendYield':
+            return'd0';
+        case 'TrailingAnnualDividendInPercent':
+            return'y0';
+        case 'DilutedEPS':
+            return'e0';
+        case 'EBITDA':
+            return'j4';
+        case 'EPSEstimatedCurrentYear':
+            return 'e7';
+        case 'EPSEstimateNextQuarter':
+            return 'e9';
+        case 'EPSEstimateNextYear':
+            return'e8';
+        case 'ExDividendDate':
+            return'q0';
+        case 'FiftyDayMovingAverage':
+            return'm3';
+        case 'SharesFloat':
+            return'f6';
+        case 'HighLimit':
+            return'l2';
+        case 'HoldingsGainPercent':
+            return 'g5';
+        case 'HoldingsGain':
+            return 'g6';
+        case 'HoldingsValue':
+            return 'v7';
+        case 'LastTradeDate':
+            return 'd1';
+        case 'LastTradePriceOnly':
+            return 'l1';
+        case 'LastTradeWithTime':
+            return 'k1';
+        case 'LastTradeSize':
+            return 'k3';
+        case 'LastTradeTime':
+            return 't1';
+        case 'LastTradeWithTime':
+            return 'l0';
+        case 'LowLimit':
+            return 'l3';
+        case 'MarketCap':
+            return 'j3';
+        case 'MoreInfo':
+            return 'i0';
+        case 'Name':
+            return 'n0';
+        case 'Notes':
+            return 'n4';
+        case 'OneYearTargetPrice':
+            return 't8';
+        case 'Open':
+            return 'o0';
+        case 'OrderBook':
+            return 'i5';
+        case 'PEGRatio':
+            return 'r5';
+        case 'PERatio':
+            return 'r2';
+        case 'PercentChangeFromFiftydayMoving':
+            return 'm8';
+        case 'PercentChangeFromTwoHundreddayMoving':
+            return 'm6';
+        case 'ChangeInPercentFromYear':
+            return 'k5';
+        case 'PercentChangeFromYear':
+            return 'j6';
+        case 'PreviousClose':
+            return 'p0';
+        case 'Price':
+            return 'p6';
+        case 'PriceEPSEstimateCurrent':
+            return 'r6';
+        case 'PriceEPSEstimateNext':
+            return 'r7';
+        case 'PricePaid':
+            return 'p1';
+        case 'PriceSales':
+            return 'p5';
+        case 'Revenue':
+            return 's6';
+        case 'SharesOwned':
+            return 's1';
+        case 'Shares':
+            return 'j2';
+        case 'ShortRatio':
+            return 's7';
+        case 'StockExchange':
+            return 'x0';
+        case 'Symbol':
+            return 's0';
+        case 'TickerTrend':
+            return 't7';
+        case 'TradeDate':
+            return 'd2';
+        case 'TradeLinks':
+            return 't6';
+        case 'TradeLinksAdditional':
+            return 'f0';
+        case 'TwoHundredDayMovingAverage':
+            return 'm4';
+        case 'Volume':
+            return 'v0';
+        case 'YearHigh':
+            return 'k0';
+        case 'YearLow':
+            return 'j0';
+        case 'YearRange':
+            return 'w0';
+        default:
+            return false;
+        }
+    }
+
 }
-}
+for($i = 0; $i != 50; $i++)
+    echo YahooFinance::toAbbrev('ChangeFromFiftyDayMovingAverage');
 
 
-/*
 $arr = array("STEM","COOL","RENN","DRYS","KCG","GOOG","NVDA","RAD");
 $arr = YahooFinance::retrieveCurrentPrice($arr);
 foreach($arr as $k => $v)
 {
-if($k == 'filesize')echo "File size: $v";else
-echo $k.': $'.$v.'  '.YahooFinance::retrieveEarningsDate($k)."\n";
+    if($k == 'filesize') {
+        echo "File size: $v\n";
+        continue;
+    }
+    else
+        echo $k.': $'.$v.'  '.YahooFinance::retrieveEarningsDate($k)."\n";
 }
-echo YahooFinance::retrieveEarningsDate('rad');*/
+echo YahooFinance::retrieveEarningsDate('rad');
+
+
 ?>
