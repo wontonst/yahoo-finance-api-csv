@@ -415,22 +415,6 @@ class YahooFinance {
     }
 
 }
-for($i = 0; $i != 50; $i++)
-    echo YahooFinance::toAbbrev('ChangeFromFiftyDayMovingAverage');
-
-
-$arr = array("STEM","COOL","RENN","DRYS","KCG","GOOG","NVDA","RAD");
-$arr = YahooFinance::retrieveCurrentPrice($arr);
-foreach($arr as $k => $v)
-{
-    if($k == 'filesize') {
-        echo "File size: $v\n";
-        continue;
-    }
-    else
-        echo $k.': $'.$v.'  '.YahooFinance::retrieveEarningsDate($k)."\n";
-}
-echo YahooFinance::retrieveEarningsDate('rad');
 
 
 ?>
