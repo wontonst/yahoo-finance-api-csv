@@ -9,7 +9,7 @@ $start = microtime(true);
 for($i = 0; $i != $iterations; $i++)
     YahooFinance::toAbbrev('ChangeFromFiftyDayMovingAverage');
 $end = microtime(true);
-echo "\n".'Time to execute '.$iterations.' calls : '.($end-$start).' seconds'."\n\t".'('.(1000*($end-$start))/$iterations.' milliseconds per call)'."\n";
+echo "\n".'Time to execute '.$iterations.' abbreviation calls: '.($end-$start).' seconds'."\n\t".'('.(1000*($end-$start))/$iterations.' milliseconds per call)'."\n";
 
 //current price retrieval
 $iterations = 5;

@@ -1,4 +1,8 @@
 yahoo-finance-api-csv
 =====================
 
-interacts with the yahoo finance api using html get requests and parsing the returned csv
+Interacts with the yahoo finance api using html get requests and parsing the returned csv
+
+sample.php contains sample code on how to use this script
+
+test.php contains unit test code, run to check running time per function call
