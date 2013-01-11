@@ -8,13 +8,11 @@ $arr = array("STEM","COOL","RENN","DRYS","KCG","GOOG","NVDA","RAD");
 //grab price for all stocks in array
 $arr = YahooFinance::retrieveCurrentPrice($arr);
 
-foreach($arr as $k => $v)
-{
+foreach($arr as $k => $v) {
     if($k == 'filesize') {
         echo "File size: $v\n";
         continue;
-    }
-    else
+    } else
         echo $k.': $'.$v."\n";
 }
 echo 'Earnings date for RAD (Rite Aid) : '.YahooFinance::retrieveEarningsDate('rad')."\n";

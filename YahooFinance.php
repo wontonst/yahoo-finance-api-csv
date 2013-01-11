@@ -114,8 +114,7 @@ class YahooFinance {
             }
             $stockarray = array_combine($stock, $stocklist);
             $url = $url.$stockquery.'&f=l1'.STATIC_END_;
-        }
-        else {
+        } else {
 //		die('YAHOO FINANCE RETRIEVECURRENTPRICE IS NOT EQUIPPED TO HANDLE NONARRAY PARAMETER');
             $url = BASE_URL_.$stock.'&f=l1'.STATIC_END_;
         }
@@ -129,14 +128,10 @@ class YahooFinance {
         $i = 0;
         $stockarray['filesize'] = 0;
 
-        while($line = fgets($file))
-        {
-            if(!is_array($stock))
-            {
+        while($line = fgets($file)) {
+            if(!is_array($stock)) {
                 $stockarray[$stock]=trim($line);
-            }
-            else
-            {
+            } else {
                 $stockarray[$stock[$i]]=trim($line);
             }
             $i++;
@@ -232,12 +227,11 @@ class YahooFinance {
         fclose($handle);
         return $arr;
     }
-    static function retrieveEarningsDate($ticker)
-    {
+    static function retrieveEarningsDate($ticker) {
         $url = 'http://finance.yahoo.com/q?s='.$ticker;
         $file = fopen($url,'r');
         $string = stream_get_contents($file);
-fclose($file);
+        fclose($file);
         $index = strpos($string,'Next Earnings Date:</th><td class=');
         $line = substr($string,$index+52,20);
 //echo $line;
@@ -250,8 +244,7 @@ fclose($file);
         return $matches[1];
     }
 
-    public static function toAbbrev($str)
-    {
+    public static function toAbbrev($str) {
         switch($str) {
         case 'AfterHoursChange':
             return 'c8';
