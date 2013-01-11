@@ -237,7 +237,7 @@ class YahooFinance {
         $url = 'http://finance.yahoo.com/q?s='.$ticker;
         $file = fopen($url,'r');
         $string = stream_get_contents($file);
-
+fclose($file);
         $index = strpos($string,'Next Earnings Date:</th><td class=');
         $line = substr($string,$index+52,20);
 //echo $line;

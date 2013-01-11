@@ -22,4 +22,10 @@ echo "\n".'Time to retrieve '.count($arr).' stock prices : '.($end-$start).' sec
 $mtime += $end-$start;
 }
 echo "\n\n".'Time to execute '.$iterations.' stock price retrieval pulls : '.$mtime.' seconds'."\n\t".'('.$mtime/$iterations.' seconds per pull)'."\n";
+
+$start = microtime(true);
+for($i = 0; $i != 5; $i++)
+YahooFinance::retrieveEarningsDate('rad');
+$end = microtime(true);
+echo "\n".'Time to retrieve 5 earnings dates: '.($end-$start).' seconds ('.(($end-$start)/5).' seconds per pull'."\n";
 ?>
