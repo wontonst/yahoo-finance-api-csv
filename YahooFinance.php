@@ -4,6 +4,9 @@ define('HISTORICAL_URL_', 'http://ichart.yahoo.com/table.csv?s=');
 define('STATIC_END_', '&e=.csv');
 define('STATIC_HISTORICAL_', '&ignore=.csv');
 
+// UTC time default zone
+date_default_timezone_set('UTC');
+
 class YahooFinance {
 
     /**
