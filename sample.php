@@ -17,5 +17,10 @@ foreach($arr as $k => $v) {
 }
 echo 'Earnings date for RAD (Rite Aid) : '.YahooFinance::retrieveEarningsDate('rad')."\n";
 
+echo 'Retrieving historical data for GOOG...'."\n";
+$historical = (YahooFinance::retrieveHistorical('GOOG','20150101','20150108','daily'));
+foreach($historical as $val){
+echo 'Date: '.$val['date'].' Open: '.$val['open'].' Close: '.$val['close']."\n";
+}
 
 ?>
